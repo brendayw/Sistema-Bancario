@@ -1,8 +1,8 @@
 package ar.utn.frbb.tup.sistema_bancario.model;
 
 public class Payment {
-    private int month;
-    private double amount;
+    private final int month;
+    private final double amount;
 
     public Payment(int month, double amount) {
         this.month = month;
@@ -16,5 +16,12 @@ public class Payment {
 
     public double getAmount() {
         return amount;
+    }
+
+    @Override
+    public String toString() {
+        return "Pago:" +
+                "\n mensual: " + month +
+                "\n monto: " + amount;
     }
 }

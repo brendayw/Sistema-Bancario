@@ -23,9 +23,14 @@ public class LoanController {
     //solicita prestamo
     @PostMapping("/apply")
     public ResponseEntity<LoanDto> requestLoan(@RequestBody LoanDto loanRequest) {
-        LoanDto createdLoan = loanService.requestLoan(loanRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdLoan);
+        try {
+            LoanDto createdLoan = loanService.requestLoan(loanRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdLoan);
+        } catch (Throwable e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
+
 
     //obtener prestamo de cliente por id
     @GetMapping("/client/{id_client}")

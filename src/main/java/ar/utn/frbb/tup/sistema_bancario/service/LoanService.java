@@ -5,6 +5,7 @@ import ar.utn.frbb.tup.sistema_bancario.controller.dto.LoanDto;
 import ar.utn.frbb.tup.sistema_bancario.model.Loan;
 import ar.utn.frbb.tup.sistema_bancario.model.enums.LoanStatus;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.loans.LoanNotFound;
+import ar.utn.frbb.tup.sistema_bancario.model.exceptions.scorescredit.CreditScoreTooLowException;
 import ar.utn.frbb.tup.sistema_bancario.persitence.dao.LoanDao;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +18,22 @@ import static ar.utn.frbb.tup.sistema_bancario.model.enums.LoanStatus.PENDING;
 @Service
 public class LoanService {
     public final LoanDao loanDao;
+    private final ScoreCreditService scoreCredit;
 
-    public LoanService(LoanDao loanDao) {
+    public LoanService(LoanDao loanDao, ScoreCreditService scoreCredit) {
         this.loanDao = loanDao;
+        this.scoreCredit = scoreCredit;
     }
 
     //solicitar prestamo
-    public LoanDto requestLoan(LoanDto loanDto) {
+    public LoanDto requestLoan(LoanDto loanDto) throws Throwable {
+        //verifica el score
+        int score = scoreCredit.getScoreCredit(loanDto.getId_client());
+
+        if (score > 650) {
+            throw new CreditScoreTooLowException("El score crediticio: " + score + "es demasiado bajo.\nSu solicitud ha sido rechazada");
+        }
+
         Loan loan = new Loan(
                 loanDto.getId_loan(),
                 loanDto.getId_client(),
