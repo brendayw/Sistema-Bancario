@@ -1,26 +1,33 @@
 package ar.utn.frbb.tup.sistema_bancario.model;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
 
+import ar.utn.frbb.tup.sistema_bancario.controller.dto.ClientDto;
 import ar.utn.frbb.tup.sistema_bancario.model.enums.AccountType;
 import ar.utn.frbb.tup.sistema_bancario.model.enums.CurrencyType;
 import ar.utn.frbb.tup.sistema_bancario.controller.validations.AccountValidator;
 import ar.utn.frbb.tup.sistema_bancario.model.enums.EntityType;
 
 public class Client extends Person {
+    private long id_client;
     private EntityType entityType;
     private LocalDate registrationDate;
-    private List<Account> accounts = new ArrayList<>();
+    private Set<Account> accounts = new HashSet<>();
     private AccountValidator accountValidator;
+    private boolean active;
 
     //constructor
-    public Client(long id_client, String name, String lastname, String email, String phone, EntityType entityType, LocalDate registrationDate, AccountValidator accountValidator) {
-        super(id_client, name, lastname, email, phone);
+    public Client(String name, String lastname, String email, String phone, long id_client, EntityType entityType, LocalDate registrationDate, Set<Account> accounts, AccountValidator accountValidator, boolean active) {
+        super(name, lastname, email, phone);
+        this.id_client = id_client;
         this.entityType = entityType;
-        this.registrationDate = LocalDate.now();
+        this.registrationDate = registrationDate;
+        this.accounts = accounts;
         this.accountValidator = accountValidator;
+        this.active = active;
     }
 
     public boolean addAccount(Account account) {
@@ -52,12 +59,11 @@ public class Client extends Person {
     }
 
     //getters & setters
-    public List<Account> getAccounts() {
-        return accounts;
+    public long getId_client() {
+        return id_client;
     }
-
-    public AccountValidator getAccountValidator() {
-        return accountValidator;
+    public void setId_client(long id_client) {
+        this.id_client = id_client;
     }
 
     public EntityType getEntityType() {
@@ -72,5 +78,36 @@ public class Client extends Person {
     }
     public void setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public Set<Account> getAccounts() {
+        return accounts;
+    }
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
+    }
+
+    public AccountValidator getAccountValidator() {
+        return accountValidator;
+    }
+    public void setAccountValidator(AccountValidator accountValidator) {
+        this.accountValidator = accountValidator;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente: " +
+                "\nId: " + id_client +
+                "\nTipo de persona: " + entityType +
+                "\nFecha de registro: " + registrationDate +
+                "\nCuentas: " + accounts +
+                "\nEstado del cliente: " + active;
     }
 }

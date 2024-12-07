@@ -1,7 +1,6 @@
 package ar.utn.frbb.tup.sistema_bancario.model;
 
 import ar.utn.frbb.tup.sistema_bancario.model.enums.LoanStatus;
-import ar.utn.frbb.tup.sistema_bancario.persitence.dao.LoanDao;
 
 public class Loan {
     private long id_loan;
@@ -104,5 +103,18 @@ public class Loan {
     }
     public void setApprovalDate(String approvalDate) {
         this.approvalDate = approvalDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Prestamo: " +
+                "\nId del prestamo: " + id_loan +
+                "\nId del cliente: " + id_client +
+                "\nMonto: " +amount +
+                "\nTasa de interes: " + interestRate +
+                "\nPlazo en meses: " + termMonths +
+                "\nFecha de solicitud: " +requestDate +
+                "\nFecha de aprovacion: " + approvalDate +
+                "\nEstado: " + loanStatus;
     }
 }

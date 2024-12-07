@@ -1,4 +1,4 @@
-package ar.utn.frbb.tup.sistema_bancario.service;
+package ar.utn.frbb.tup.sistema_bancario.service.impl;
 
 import org.springframework.stereotype.Service;
 

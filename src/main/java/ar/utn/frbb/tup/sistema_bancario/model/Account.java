@@ -4,7 +4,6 @@ import ar.utn.frbb.tup.sistema_bancario.model.enums.AccountType;
 import ar.utn.frbb.tup.sistema_bancario.model.enums.CurrencyType;
 import ar.utn.frbb.tup.sistema_bancario.persitence.entity.AccountEntity;
 
-
 public class Account {
     public AccountType accountType;
     public CurrencyType currencyType;
@@ -12,9 +11,14 @@ public class Account {
     private String uan;
     private String cvu;
     private String alias;
+    private boolean active = true;
 
     //constructor
-    public Account(AccountType accountType, CurrencyType currencyType, Client holder) {
+    public Account(String uan, String cvu, String alias, AccountType accountType, CurrencyType currencyType, Client holder) {
+        if (accountType == null || currencyType == null || holder == null) {
+            throw new IllegalArgumentException("AccountType, CurrencyType y Holder no pueden ser nulos.");
+        }
+
         this.accountType = accountType;
         this.currencyType = currencyType;
         this.holder = holder;
@@ -65,4 +69,26 @@ public class Account {
     public void setAlias(String alias) {
         this.alias = alias;
     }
+
+    public boolean isActive() {
+        return active;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountType=" + accountType +
+                ", currencyType=" + currencyType +
+                ", holder=" + holder.getName() + // Suponiendo un método getName()
+                ", uan='" + uan + '\'' +
+                ", cvu='" + cvu + '\'' +
+                ", alias='" + alias + '\'' +
+                ", active=" + active +
+                '}';
+    }
+
+
 }

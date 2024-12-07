@@ -1,8 +1,5 @@
 package ar.utn.frbb.tup.sistema_bancario.controller.dto;
 
-import ar.utn.frbb.tup.sistema_bancario.model.enums.EntityType;
-import java.time.LocalDate;
-
 public class PersonDto {
     private String name;
     private String lastname;
@@ -10,6 +7,16 @@ public class PersonDto {
     private String phone;
     private String birthDate;
 
+    //constructor
+    public PersonDto(String name, String lastname, String email, String phone, String birthDate) {
+        this.name = name;
+        this.lastname = lastname;
+        this.email = email;
+        this.phone = phone;
+        this.birthDate = birthDate;
+    }
+
+    //getters & setters
     public String getName() {
         return name;
     }

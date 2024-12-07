@@ -1,15 +1,13 @@
 package ar.utn.frbb.tup.sistema_bancario.model;
 
 public class Person {
-    private long id_client;
     private String name;
     private String lastname;
     private String email;
     private String phone;
 
     //constructor
-    public Person(long id_client, String name, String lastname, String email, String phone) {
-        this.id_client = id_client;
+    public Person(String name, String lastname, String email, String phone) {
         this.name = name;
         this.lastname = lastname;
         this.email = email;
@@ -17,13 +15,6 @@ public class Person {
     }
 
     // getters and Setters
-    public long getId_client() {
-        return id_client;
-    }
-    public void setId_client(long id_client) {
-        this.id_client = id_client;
-    }
-
     public String getName() {
         return name;
     }

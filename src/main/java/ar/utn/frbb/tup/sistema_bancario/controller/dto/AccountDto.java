@@ -7,14 +7,18 @@ public class AccountDto {
     private String uan; //unique account number similar al id
     private String cvu;
     private String alias;
+    private long id_client;
     public AccountType accountType;
     public CurrencyType currencyType;
 
-    //constructor
-    public AccountDto(String uan, String cvu, String alias, AccountType accountType, CurrencyType currencyType) {
+    //constructores
+    public AccountDto() {}
+
+    public AccountDto(String uan, String cvu, String alias, long id_client, AccountType accountType, CurrencyType currencyType) {
         this.uan = uan;
         this.cvu = cvu;
         this.alias = alias;
+        this.id_client = id_client;
         this.accountType = accountType;
         this.currencyType = currencyType;
     }
@@ -39,6 +43,13 @@ public class AccountDto {
     }
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    public long getId_client() {
+        return id_client;
+    }
+    public void setId_client(long id_client) {
+        this.id_client = id_client;
     }
 
     public AccountType getAccountType() {

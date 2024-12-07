@@ -13,9 +13,9 @@ public class LoanDto {
     private String approvalDate;
 
     //constructor
-    public LoanDto(long id_loan, long cliente_id, double amount, double interestRate, int termMonths, LoanStatus loanStatus, String requestDate, String approvalDate) {
+    public LoanDto(long id_loan, long id_client, double amount, double interestRate, int termMonths, LoanStatus loanStatus, String requestDate, String approvalDate) {
         this.id_loan = id_loan;
-        this.id_client = cliente_id;
+        this.id_client = id_client;
         this.amount = amount;
         this.interestRate = interestRate;
         this.termMonths = termMonths;
