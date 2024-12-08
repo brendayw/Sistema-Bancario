@@ -43,7 +43,7 @@ public class AccountController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> createAccount(@RequestBody AccountDto accountDto) {
         try {
-            Client client = clientService.getClientById(accountDto.getId_client());
+            Client client = clientService.getClientById(accountDto.getHolder());
             if (client == null) {
                 return new ResponseEntity<>("Cliente no encontrado.", HttpStatus.BAD_REQUEST);
             }

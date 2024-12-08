@@ -1,68 +1,66 @@
 package ar.utn.frbb.tup.sistema_bancario.controller.dto;
 
-import ar.utn.frbb.tup.sistema_bancario.model.enums.AccountType;
-import ar.utn.frbb.tup.sistema_bancario.model.enums.CurrencyType;
+import java.time.LocalDate;
 
 public class AccountDto {
-    private String uan; //unique account number similar al id
-    private String cvu;
-    private String alias;
-    private long id_client;
-    public AccountType accountType;
-    public CurrencyType currencyType;
+   private String accountType;
+   private String currencyType;
+   private String holder;
+   private int balance;
+   private boolean status;
+   private LocalDate creationDate;
 
-    //constructores
-    public AccountDto() {}
+   //constructor
+   public AccountDto(String accountType, String currencyType, String holder, int balance, boolean status, LocalDate creationDate) {
+       this.accountType = accountType;
+       this.currencyType = currencyType;
+       this.holder = holder;
+       this.balance = balance;
+       this.status = status;
+       this.creationDate = creationDate;
+   }
 
-    public AccountDto(String uan, String cvu, String alias, long id_client, AccountType accountType, CurrencyType currencyType) {
-        this.uan = uan;
-        this.cvu = cvu;
-        this.alias = alias;
-        this.id_client = id_client;
-        this.accountType = accountType;
-        this.currencyType = currencyType;
-    }
+   //getters and setters
+   public String getAccountType() {
+       return accountType;
+   }
+   public void setAccountType(String accountType) {
+       this.accountType = accountType;
+   }
 
-    //getters & setters
-    public String getUan() {
-        return uan;
-    }
-    public void setUan(String uan) {
-        this.uan = uan;
-    }
+   public String getCurrencyType() {
+       return currencyType;
+   }
+   public void setCurrencyType(String currencyType) {
+       this.currencyType = currencyType;
+   }
 
-    public String getCvu() {
-        return cvu;
-    }
-    public void setCvu(String cvu) {
-        this.cvu = cvu;
-    }
+   public String getHolder() {
+       return holder;
+   }
+   public void setHolder(String holder) {
+       this.holder = holder;
+   }
 
-    public String getAlias() {
-        return alias;
-    }
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
+   public int getBalance() {
+       return balance;
+   }
+   public void setBalance(int balance) {
+        this.balance = balance;
+   }
 
-    public long getId_client() {
-        return id_client;
-    }
-    public void setId_client(long id_client) {
-        this.id_client = id_client;
-    }
+   public boolean isStatus() {
+       return status;
+   }
+   public void setStatus(boolean status) {
+       this.status = status;
+   }
 
-    public AccountType getAccountType() {
-        return accountType;
-    }
-    public void setAccountType(AccountType accountType) {
-        this.accountType = accountType;
-    }
+   public LocalDate getCreationDate() {
+      return creationDate;
+   }
+   public void setCreationDate(LocalDate creationDate) {
+       this.creationDate = creationDate;
+   }
 
-    public CurrencyType getCurrencyType() {
-        return currencyType;
-    }
-    public void setCurrencyType(CurrencyType currencyType) {
-        this.currencyType = currencyType;
-    }
 }

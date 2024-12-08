@@ -2,93 +2,94 @@ package ar.utn.frbb.tup.sistema_bancario.model;
 
 import ar.utn.frbb.tup.sistema_bancario.model.enums.AccountType;
 import ar.utn.frbb.tup.sistema_bancario.model.enums.CurrencyType;
-import ar.utn.frbb.tup.sistema_bancario.persitence.entity.AccountEntity;
+
+import java.time.LocalDate;
 
 public class Account {
-    public AccountType accountType;
-    public CurrencyType currencyType;
-    public Client holder;
-    private String uan;
-    private String cvu;
-    private String alias;
-    private boolean active = true;
+   private long id_account;
+   private String id_client;
+   private long cvu;
+   private String alias;
+   private AccountType accountType;
+   private CurrencyType currencyType;
+   private int balance;
+   private LocalDate creationDate;
+   private boolean status;
 
-    //constructor
-    public Account(String uan, String cvu, String alias, AccountType accountType, CurrencyType currencyType, Client holder) {
-        if (accountType == null || currencyType == null || holder == null) {
-            throw new IllegalArgumentException("AccountType, CurrencyType y Holder no pueden ser nulos.");
-        }
+   //constructor
+   public Account(long id_account, String id_client, long cvu, String alias, AccountType accountType, CurrencyType currencyType, int balance, LocalDate creationDate, boolean status) {
+       this.id_account = id_account;
+       this.id_client = id_client;
+       this.cvu = cvu;
+       this.alias = alias;
+       this.accountType = accountType;
+       this.currencyType = currencyType;
+       this.balance = balance;
+       this.creationDate = creationDate;
+       this.status = status;
+   }
 
-        this.accountType = accountType;
-        this.currencyType = currencyType;
-        this.holder = holder;
-        this.uan = AccountEntity.generateUAN();
-        this.cvu = AccountEntity.generateCvu();
-        this.alias = AccountEntity.generateAlias();
-    }
+   //getters and setters
+   public long getId_account() {
+       return id_account;
+   }
+   public void setId_account(long id_account) {
+       this.id_account = id_account;
+   }
 
-    //getters & setters
-    public AccountType getAccountType() {
-        return accountType;
-    }
-    public void setAccountType(AccountType accountType) {
-        this.accountType = accountType;
-    }
+   public String getId_client() {
+       return id_client;
+   }
+   public void setId_client(String id_client) {
+       this.id_client = id_client;
+   }
 
-    public CurrencyType getCurrencyType() {
-        return currencyType;
-    }
-    public void setCurrencyType(CurrencyType currencyType) {
-        this.currencyType = currencyType;
-    }
+   public long getCvu() {
+       return cvu;
+   }
+   public void setCvu(long cvu) {
+       this.cvu = cvu;
+   }
 
-    public Client getHolder() {
-        return holder;
-    }
-    public void setHolder(Client holder) {
-        this.holder = holder;
-    }
+   public String getAlias() {
+       return alias;
+   }
+   public void setAlias(String alias) {
+       this.alias = alias;
+   }
 
-    public String getUan() {
-        return uan;
-    }
-    public void setUan(String uan) {
-        this.uan = uan;
-    }
+   public AccountType getAccountType() {
+       return accountType;
+   }
+   public void setAccountType(AccountType accountType) {
+       this.accountType = accountType;
+   }
 
-    public String getCvu() {
-        return cvu;
-    }
-    public void setCvu(String cvu) {
-        this.cvu = cvu;
-    }
+   public CurrencyType getCurrencyType() {
+       return currencyType;
+   }
+   public void setCurrencyType(CurrencyType currencyType) {
+       this.currencyType = currencyType;
+   }
 
-    public String getAlias() {
-        return alias;
-    }
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
+   public int getBalance() {
+       return balance;
+   }
+   public void setBalance(int balance) {
+       this.balance = balance;
+   }
 
-    public boolean isActive() {
-        return active;
-    }
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+   public LocalDate getCreationDate() {
+       return creationDate;
+   }
+   public void setCreationDate(LocalDate creationDate) {
+       this.creationDate = creationDate;
+   }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "accountType=" + accountType +
-                ", currencyType=" + currencyType +
-                ", holder=" + holder.getName() + // Suponiendo un método getName()
-                ", uan='" + uan + '\'' +
-                ", cvu='" + cvu + '\'' +
-                ", alias='" + alias + '\'' +
-                ", active=" + active +
-                '}';
-    }
-
-
+   public boolean isStatus() {
+       return status;
+   }
+   public void setStatus(boolean status) {
+       this.status = status;
+   }
 }

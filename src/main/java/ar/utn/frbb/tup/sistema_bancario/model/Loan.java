@@ -5,8 +5,8 @@ import ar.utn.frbb.tup.sistema_bancario.model.enums.LoanStatus;
 public class Loan {
     private long id_loan;
     private long id_client;
-    private double amount;         // Monto del préstamo
-    private double interestRate;   // Tasa de interés anual
+    private double amount;  // Monto del préstamo
+    private double interestRate; // Tasa de interés anual
     private int termMonths;// Plazo en meses (12 meses, 24 meses, etc.)
     private String requestDate;
     private String approvalDate;
@@ -22,10 +22,6 @@ public class Loan {
         this.loanStatus = loanStatus;
         this.requestDate = requestDate;
         this.approvalDate = approvalDate;
-    }
-
-    public Loan() {
-
     }
 
     /*// Métodos de validación (ya tienes estos)
@@ -66,7 +62,6 @@ public class Loan {
     }
     public void setAmount(double amount) {
         this.amount = amount;
-
     }
 
     public double getInterestRate() {
@@ -81,7 +76,6 @@ public class Loan {
     }
     public void setTermMonths(int termMonths) {
         this.termMonths = termMonths;
-
     }
 
     public LoanStatus getLoanStatus() {

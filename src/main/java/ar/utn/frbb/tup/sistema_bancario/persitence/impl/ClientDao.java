@@ -56,7 +56,7 @@ public class ClientDao implements ClientDaoInterface {
     public Client deactivateClient(long id_client) {
         Client client = findClientById(id_client);
         if (client != null) {
-            client.setActive(false);
+            client.setStatus(false);
         }
         return client;
     }

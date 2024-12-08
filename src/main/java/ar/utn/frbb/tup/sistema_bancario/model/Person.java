@@ -3,13 +3,15 @@ package ar.utn.frbb.tup.sistema_bancario.model;
 public class Person {
     private String name;
     private String lastname;
+    private String dni;
     private String email;
     private String phone;
 
     //constructor
-    public Person(String name, String lastname, String email, String phone) {
+    public Person(String name, String lastname, String dni, String email, String phone) {
         this.name = name;
         this.lastname = lastname;
+        this.dni = dni;
         this.email = email;
         this.phone = phone;
     }
@@ -27,6 +29,13 @@ public class Person {
     }
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     public String getEmail() {

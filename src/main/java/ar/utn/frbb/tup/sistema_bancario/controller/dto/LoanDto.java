@@ -4,7 +4,7 @@ import ar.utn.frbb.tup.sistema_bancario.model.enums.LoanStatus;
 
 public class LoanDto {
     private long id_loan;
-    private long id_client;
+    private String id_client;
     private double amount; //cantidad
     private double interestRate; //taza de interes
     private int termMonths; //plazo en meses
@@ -13,7 +13,7 @@ public class LoanDto {
     private String approvalDate;
 
     //constructor
-    public LoanDto(long id_loan, long id_client, double amount, double interestRate, int termMonths, LoanStatus loanStatus, String requestDate, String approvalDate) {
+    public LoanDto(long id_loan, String id_client, double amount, double interestRate, int termMonths, LoanStatus loanStatus, String requestDate, String approvalDate) {
         this.id_loan = id_loan;
         this.id_client = id_client;
         this.amount = amount;
@@ -35,10 +35,10 @@ public class LoanDto {
         this.id_loan = id_loan;
     }
 
-    public long getId_client() {
+    public String getId_client() {
         return id_client;
     }
-    public void setId_client(long id_client) {
+    public void setId_client(String id_client) {
         this.id_client = id_client;
     }
 
