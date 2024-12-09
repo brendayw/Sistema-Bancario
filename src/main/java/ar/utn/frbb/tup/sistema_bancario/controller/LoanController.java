@@ -1,6 +1,5 @@
 package ar.utn.frbb.tup.sistema_bancario.controller;
 
-import ar.utn.frbb.tup.sistema_bancario.controller.dto.LoanDto;
 import ar.utn.frbb.tup.sistema_bancario.model.Client;
 import ar.utn.frbb.tup.sistema_bancario.model.Loan;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientNotFound;
@@ -15,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/loans")
@@ -26,18 +26,19 @@ public class LoanController {
     private ClientServiceInterface clientService;
 
     //obtener todos los prestamos
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Loan> getAllLoans() {
-        return loanService.getAllLoans();
+    @GetMapping
+    public ResponseEntity<List<Loan>> getAllLoans() {
+        List<Loan> loans = loanService.getAllLoans();
+        return ResponseEntity.ok(loans);
     }
 
     //solicita prestamo
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> requestLoan(@RequestBody LoanDto loanDto) {
+    public ResponseEntity<String> requestLoan(@RequestBody Loan loan) {
         try {
             //obtener el cliente por id
-            Client client = clientService.getClientById(loanDto.getId_client());
+            Client client = clientService.getClientById(loan.getId_client());
 
             // Si el cliente no existe, devolver error 400
             if (client == null) {
@@ -45,13 +46,11 @@ public class LoanController {
             }
 
             // Convertir el LoanDto en un Loan, si es necesario.
-            Loan loan = new Loan(loanDto.getId_loan(), loanDto.getId_client(), loanDto.getAmount(),
-                    loanDto.getInterestRate(), loanDto.getTermMonths(), loanDto.getLoanStatus(),
-                    loanDto.getRequestDate(), loanDto.getApprovalDate());
+
 
             try {
                 // solicita préstamo
-                loanService.requestLoan(loan, loanDto.getId_client());
+                loanService.requestLoan(loan, loan.getId_client());
                 return new ResponseEntity<>("Préstamo solicitado con éxito", HttpStatus.CREATED);
             } catch (CreditScoreTooLowException e) {
                 // excepcion si el score es muy bajo

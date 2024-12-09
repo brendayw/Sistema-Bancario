@@ -7,33 +7,26 @@ import ar.utn.frbb.tup.sistema_bancario.model.exceptions.scorescredit.CreditScor
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 @Component
 public class LoanValidator {
     public void validate(LoanDto loanDto) throws EmptyFields, ClientNotFound, CreditScoreTooLowException {
         validateEmptyFields(loanDto);
-        validateClientExists(loanDto.getId_client());
-        validateAmount(loanDto.getAmount());
-        validateInterestRate(loanDto.getInterestRate());
-        validateTermMonths(loanDto.getTermMonths());
-        validateDates(loanDto.getRequestDate(), loanDto.getApprovalDate());
+        validateAmount(loanDto.getRequestedAmount());
+        validateInterestRate(loanDto.getAnualInterestRate());
+        validateTermMonths(loanDto.getRepaymentPeriodMonths());
+        validateRequestDate(loanDto.getRequestDate());
     }
 
     private void validateEmptyFields(LoanDto loanDto) throws EmptyFields {
         if (loanDto == null ||
-                loanDto.getId_client() == null ||
-                loanDto.getAmount() <= 0 ||
-                loanDto.getInterestRate() <= 0 ||
-                loanDto.getTermMonths() <= 0 ||
+                loanDto.getRequestedAmount() <= 0 ||
+                loanDto.getAnualInterestRate() <= 0 ||
+                loanDto.getRepaymentPeriodMonths() <= 0 ||
                 loanDto.getRequestDate() == null ||
                 loanDto.getRequestDate().isEmpty()) {
             throw new EmptyFields("Uno o más campos obligatorios están vacíos o son inválidos.");
-        }
-    }
-
-    private void validateClientExists(String id_client) throws ClientNotFound {
-        if (id_client == null) {
-            throw new ClientNotFound("El cliente con id: " + id_client + " no existe.");
         }
     }
 
@@ -43,8 +36,8 @@ public class LoanValidator {
         }
     }
 
-    private void validateInterestRate(double interestRate) {
-        if (interestRate <= 0 || interestRate > 100) {
+    private void validateInterestRate(double anualInterestRate) {
+        if (anualInterestRate <= 0 || anualInterestRate > 100) {
             throw new IllegalArgumentException("La tasa de interés debe ser mayor a 0 y menor o igual a 100.");
         }
     }
@@ -55,17 +48,15 @@ public class LoanValidator {
         }
     }
 
-    private void validateDates(String requestDate, String approvalDate) {
+    private void validateRequestDate(String requestDate) {
         try {
             LocalDate parsedRequestDate = LocalDate.parse(requestDate);
-            if (approvalDate != null && !approvalDate.isEmpty()) {
-                LocalDate parsedApprovalDate = LocalDate.parse(approvalDate);
-                if (parsedApprovalDate.isBefore(parsedRequestDate)) {
-                    throw new IllegalArgumentException("La fecha de aprobación no puede ser anterior a la fecha de solicitud.");
-                }
+            if (parsedRequestDate.isAfter(LocalDate.now())) {
+                LocalDate parsedApprovalDate = LocalDate.parse(requestDate);
+                throw new IllegalArgumentException("La fecha de solicitud no puede ser una fecha futura.");
             }
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Formato de fecha inválido para las fechas de solicitud o aprobación.");
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("El formato de la fecha de solicitud es inválido. Se espera yyyy-MM-dd.");
         }
     }
 }

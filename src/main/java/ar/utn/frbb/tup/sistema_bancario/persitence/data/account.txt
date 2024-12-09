@@ -1,0 +1,1 @@
+Titular, cvu, alias, Tipo de cuenta, Tipo de moneda, Balance, Fecha de creacion, Estado

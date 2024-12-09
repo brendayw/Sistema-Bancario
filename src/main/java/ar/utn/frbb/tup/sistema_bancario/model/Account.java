@@ -6,8 +6,8 @@ import ar.utn.frbb.tup.sistema_bancario.model.enums.CurrencyType;
 import java.time.LocalDate;
 
 public class Account {
-   private long id_account;
-   private String id_client;
+   private long id_account; //id_generator
+   private long id_client; //idgenerator
    private long cvu;
    private String alias;
    private AccountType accountType;
@@ -17,7 +17,7 @@ public class Account {
    private boolean status;
 
    //constructor
-   public Account(long id_account, String id_client, long cvu, String alias, AccountType accountType, CurrencyType currencyType, int balance, LocalDate creationDate, boolean status) {
+   public Account(long id_account, long id_client, long cvu, String alias, AccountType accountType, CurrencyType currencyType, int balance, LocalDate creationDate, boolean status) {
        this.id_account = id_account;
        this.id_client = id_client;
        this.cvu = cvu;
@@ -37,10 +37,10 @@ public class Account {
        this.id_account = id_account;
    }
 
-   public String getId_client() {
+   public long getId_client() {
        return id_client;
    }
-   public void setId_client(String id_client) {
+   public void setId_client(long id_client) {
        this.id_client = id_client;
    }
 

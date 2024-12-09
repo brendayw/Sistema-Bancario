@@ -9,7 +9,7 @@ import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientNotFound;
 import java.util.List;
 
 public interface ClientServiceInterface {
-    Client createClient(Client client);
+    Client createClient(Client client) throws ClientAlreadyExists, ClientNotFound;
     Client addAccountToClient(Client client, Account account) throws AccountAlreadyExists;
     List<Client> getAllClients();
     Client getClientById(long id_client) throws ClientNotFound;

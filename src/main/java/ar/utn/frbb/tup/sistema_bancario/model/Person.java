@@ -1,19 +1,23 @@
 package ar.utn.frbb.tup.sistema_bancario.model;
 
+import java.time.LocalDate;
+
 public class Person {
     private String name;
     private String lastname;
     private String dni;
     private String email;
     private String phone;
+    private LocalDate birthDate;
 
     //constructor
-    public Person(String name, String lastname, String dni, String email, String phone) {
+    public Person(String name, String lastname, String dni, String email, String phone, LocalDate birthDate) {
         this.name = name;
         this.lastname = lastname;
         this.dni = dni;
         this.email = email;
         this.phone = phone;
+        this.birthDate = birthDate;
     }
 
     // getters and Setters
@@ -50,5 +54,12 @@ public class Person {
     }
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 }

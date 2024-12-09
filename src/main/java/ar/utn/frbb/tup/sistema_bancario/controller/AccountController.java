@@ -1,11 +1,9 @@
 package ar.utn.frbb.tup.sistema_bancario.controller;
 
-import ar.utn.frbb.tup.sistema_bancario.controller.dto.AccountDto;
 import ar.utn.frbb.tup.sistema_bancario.model.Account;
-import ar.utn.frbb.tup.sistema_bancario.model.Client;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountAlreadyExists;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountNotFound;
-import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientNotFound;
+import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountTypeNotSupported;
 import ar.utn.frbb.tup.sistema_bancario.service.AccountServiceInterface;
 
 import ar.utn.frbb.tup.sistema_bancario.service.ClientServiceInterface;
@@ -33,39 +31,36 @@ public class AccountController {
     }
 
     // GET: Obtener cuenta por UAN
-    @RequestMapping(value = "/{uan}", method = RequestMethod.GET)
-    public Account getAccountByUan(@PathVariable String uan) throws AccountNotFound {
-        return accountService.getAccountByUan(uan);
+    @RequestMapping(value = "/{id_account}", method = RequestMethod.GET)
+    public Account getAccountById(@PathVariable long id_account) throws AccountNotFound {
+        return accountService.getAccountById(id_account);
     }
 
     // POST: Crear una cuenta nueva
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> createAccount(@RequestBody AccountDto accountDto) {
+    @PostMapping
+    public ResponseEntity<Account> createAccount(@RequestBody Account account) {
         try {
-            Client client = clientService.getClientById(accountDto.getHolder());
-            if (client == null) {
-                return new ResponseEntity<>("Cliente no encontrado.", HttpStatus.BAD_REQUEST);
-            }
-
-            Account account = new Account(accountDto.getUan(), accountDto.getCvu(), accountDto.getAlias(),
-                    accountDto.getAccountType(), accountDto.getCurrencyType(), client);
-            try {
-                accountService.createAccount(account);
-                return new ResponseEntity<>("Cuenta creada con éxito.", HttpStatus.CREATED);
-            } catch (AccountAlreadyExists e) {
-                return new ResponseEntity<>("La cuenta ya existe", HttpStatus.BAD_REQUEST);
-            }
-
-        } catch (ClientNotFound e) {
-            return new ResponseEntity<>("Cliente no encontrado.", HttpStatus.NOT_FOUND);
+            //llama al servicio para crear la cuenta
+            Account createdAccount = accountService.createAccount(account);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdAccount);
+        } catch (AccountAlreadyExists e) {
+            //si la cuenta existe
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        } catch (AccountTypeNotSupported e) {
+            //si el tipo de cuenta a crear no es valido
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        } catch (AccountNotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            //otros
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
-    // DELETE: Desactivar cuenta por UAN
-    @RequestMapping(value = "/{uan}", method = RequestMethod.DELETE)
+    // DELETE: Desactivar cuenta por id de la cuenta
+    @PutMapping("/{id_account}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deactivateAccount(@PathVariable String uan) throws AccountNotFound {
-        accountService.deactivateAccount(uan);
+    public void deactivateAccount(@PathVariable long id_account) throws AccountNotFound {
+        accountService.deactivateAccountById(id_account);
     }
 }

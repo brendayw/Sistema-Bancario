@@ -1,16 +1,16 @@
-package ar.utn.frbb.tup.sistema_bancario.model;
+package ar.utn.frbb.tup.sistema_bancario.controller.dto;
 
-public class Payment {
+public class PaymentDto {
     private int month;
     private double amount;
 
     //constructor
-    public Payment(int month, double amount) {
+    public PaymentDto(int month, double amount) {
         this.month = month;
         this.amount = amount;
     }
 
-    // Getters & setters
+    //getters and setters
     public int getMonth() {
         return month;
     }
@@ -23,12 +23,5 @@ public class Payment {
     }
     public void setAmount(double amount) {
         this.amount = amount;
-    }
-
-    @Override
-    public String toString() {
-        return "Pago:" +
-                "\n mensual: " + month +
-                "\n monto: " + amount;
     }
 }

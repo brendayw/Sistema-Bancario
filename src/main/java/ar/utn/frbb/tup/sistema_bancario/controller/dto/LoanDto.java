@@ -2,71 +2,57 @@ package ar.utn.frbb.tup.sistema_bancario.controller.dto;
 
 import ar.utn.frbb.tup.sistema_bancario.model.enums.LoanStatus;
 
+import java.util.List;
+
 public class LoanDto {
-    private long id_loan;
-    private String id_client;
-    private double amount; //cantidad
-    private double interestRate; //taza de interes
-    private int termMonths; //plazo en meses
-    private LoanStatus loanStatus; //estado del prestamo
+    private double requestedAmount;
+    private int repaymentPeriodMonths;
+    private double anualInterestRate;
+    private String loanStatus;
     private String requestDate;
-    private String approvalDate;
+    private List<PaymentDto> payments;
 
     //constructor
-    public LoanDto(long id_loan, String id_client, double amount, double interestRate, int termMonths, LoanStatus loanStatus, String requestDate, String approvalDate) {
-        this.id_loan = id_loan;
-        this.id_client = id_client;
-        this.amount = amount;
-        this.interestRate = interestRate;
-        this.termMonths = termMonths;
+
+
+    public LoanDto(double requestedAmount, int repaymentPeriodMonths, double anualInterestRate, String loanStatus, String requestDate, List<PaymentDto> payments) {
+        this.requestedAmount = requestedAmount;
+        this.repaymentPeriodMonths = repaymentPeriodMonths;
+        this.anualInterestRate = anualInterestRate;
         this.loanStatus = loanStatus;
         this.requestDate = requestDate;
-        this.approvalDate = approvalDate;
+        this.payments = payments;
     }
 
     //constructor sin parametros para compatibilidad
     public LoanDto() {}
 
     //getters & setters
-    public long getId_loan() {
-        return id_loan;
+    public double getRequestedAmount() {
+        return requestedAmount;
     }
-    public void setId_loan(long id_loan) {
-        this.id_loan = id_loan;
-    }
-
-    public String getId_client() {
-        return id_client;
-    }
-    public void setId_client(String id_client) {
-        this.id_client = id_client;
+    public void setRequestedAmount(double requestedAmount) {
+        this.requestedAmount = requestedAmount;
     }
 
-    public double getAmount() {
-        return amount;
+    public int getRepaymentPeriodMonths() {
+        return repaymentPeriodMonths;
     }
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public double getInterestRate() {
-        return interestRate;
-    }
-    public void setInterestRate(double interestRate) {
-        this.interestRate = interestRate;
+    public void setRepaymentPeriodMonths(int repaymentPeriodMonths) {
+        this.repaymentPeriodMonths = repaymentPeriodMonths;
     }
 
-    public int getTermMonths() {
-        return termMonths;
+    public double getAnualInterestRate() {
+        return anualInterestRate;
     }
-    public void setTermMonths(int termMonths) {
-        this.termMonths = termMonths;
+    public void setAnualInterestRate(double anualInterestRate) {
+        this.anualInterestRate = anualInterestRate;
     }
 
-    public LoanStatus getLoanStatus() {
+    public String getLoanStatus() {
         return loanStatus;
     }
-    public void setLoanStatus(LoanStatus loanStatus) {
+    public void setLoanStatus(String loanStatus) {
         this.loanStatus = loanStatus;
     }
 
@@ -77,11 +63,10 @@ public class LoanDto {
         this.requestDate = requestDate;
     }
 
-    public String getApprovalDate() {
-        return approvalDate;
+    public List<PaymentDto> getPayments() {
+        return payments;
     }
-    public void setApprovalDate(String approvalDate) {
-        this.approvalDate = approvalDate;
+    public void setPayments(List<PaymentDto> payments) {
+        this.payments = payments;
     }
-
 }

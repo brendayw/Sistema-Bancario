@@ -1,6 +1,7 @@
 package ar.utn.frbb.tup.sistema_bancario.controller.handler;
 
-import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountTypeAlreadyExists;
+import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountAlreadyExists;
+
 import io.micrometer.common.lang.Nullable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class TuResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {AccountTypeAlreadyExists.class, IllegalArgumentException.class})
+    @ExceptionHandler(value = {AccountAlreadyExists.class, IllegalArgumentException.class})
 
     protected ResponseEntity<Object> handleMateriaNotFound(Exception ex, WebRequest request) {
         String exceptionMessage = ex.getMessage();

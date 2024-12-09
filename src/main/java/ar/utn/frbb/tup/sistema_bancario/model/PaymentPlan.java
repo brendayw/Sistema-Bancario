@@ -4,31 +4,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentPlan {
-    private final List<Payment> payments;
+    private double monthlyInterest;
+    private double monthlyPayment;
+    private List<Payment> payments;
 
-    public PaymentPlan(Loan loan) {
-        this.payments = new ArrayList<>();
-        calculatePayments(loan);
+    //constructor
+    public PaymentPlan(double monthlyInterest, double monthlyPayment, List<Payment> payments) {
+        this.monthlyInterest = monthlyInterest;
+        this.monthlyPayment = monthlyPayment;
+        this.payments = payments;
     }
 
-    private void calculatePayments(Loan loan) {
-        // Validación -> ESTO CAPAZ PODRIA IR EN OTRO LADO
-        if (loan.getTermMonths() <= 0 || loan.getAmount() <= 0 || loan.getInterestRate() <= 0) {
-            throw new IllegalArgumentException("Los valores del préstamo no son válidos.");
-        }
+    private void calculatePayments(double amount, double interestRate, int termMonths) {
+        //convierta la tasa de interes anual a mensual
+        this.monthlyInterest = interestRate / 12 / 100;
 
-        double monthlyRate = loan.getInterestRate() / 100 / 12; // Tasa mensual
-        double monthlyPayment = (loan.getAmount() * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -loan.getTermMonths()));
-
-        //REDONDEO
-        monthlyPayment = Math.round(monthlyPayment * 100.0) / 100.0;
-
-        for (int i = 1; i <= loan.getTermMonths(); i++) {
+        //formula de amortizacion
+        this.monthlyPayment = (amount * monthlyInterest) / (1 - Math.pow(1 + monthlyInterest, -termMonths));
+        for (int i = 1; i <= termMonths; i++) {
             payments.add(new Payment(i, monthlyPayment));
         }
     }
 
+    //getters and setters
+    public double getMonthlyInterest() {
+        return monthlyInterest;
+    }
+    public void setMonthlyInterest(double monthlyInterest) {
+        this.monthlyInterest = monthlyInterest;
+    }
+
+    public double getMonthlyPayment() {
+        return monthlyPayment;
+    }
+    public void setMonthlyPayment(double monthlyPayment) {
+        this.monthlyPayment = monthlyPayment;
+    }
+
     public List<Payment> getPayments() {
         return payments;
+    }
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
     }
 }

@@ -8,6 +8,7 @@ import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientNotFound;
 import ar.utn.frbb.tup.sistema_bancario.persitence.ClientDaoInterface;
 
 import ar.utn.frbb.tup.sistema_bancario.service.ClientServiceInterface;
+import ar.utn.frbb.tup.sistema_bancario.utils.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @Service
 public class ClientService implements ClientServiceInterface {
     @Autowired
-    private ClientDaoInterface clientDao;
+    private final ClientDaoInterface clientDao;
 
     //constructor
     public ClientService(ClientDaoInterface clientDao) {
@@ -25,34 +26,43 @@ public class ClientService implements ClientServiceInterface {
 
     // Crea un cliente nuevo
     @Override
-    public Client createClient(Client client) {
+    public Client createClient(Client client) throws ClientAlreadyExists, ClientNotFound {
         try {
+            //verifica si existe el cliente
             Client existingClient = clientDao.findClientById(client.getId_client());
 
             if (existingClient != null) {
                 throw new ClientAlreadyExists("El cliente ya existe.");
             }
-            clientDao.saveClient(client);
-            return client;
-        } catch (ClientAlreadyExists e) {
-            System.out.println(e.getMessage());
-            return null;
         } catch (ClientNotFound e) {
-            System.out.println("Cliente no encontrado: " + e.getMessage());
-            return null;
+            //verifica si el cliente tiene id y si no tiene genera uno
+            if (client.getId_client() == 0) {
+                long generatedClientId = Long.parseLong(IdGenerator.idNumberGenerator());
+                client.setId_client(generatedClientId);
+            }
+            clientDao.saveClient(client); //guarda el cliente con el id
+            return client;
         }
+        return null;
     }
 
     //asocia una cuenta a un cliente
     @Override
     public Client addAccountToClient(Client client, Account account) throws AccountAlreadyExists {
+        //verifica si la cuenta ya esta asociada a un cliente
         for (Account existingAccount : client.getAccounts()) {
-            if (existingAccount.getUan().equals(account.getUan())) {
+            if (existingAccount.getId_account() == account.getId_account()) {
                 throw new AccountAlreadyExists("La cuenta ya está asociada a un cliente.");
             }
         }
-        client.getAccounts().add(account);
-        clientDao.saveClient(client);
+
+        //genera el id
+        if (account.getId_account() == 0) {
+            account.setId_account(Long.parseLong(IdGenerator.idNumberGenerator()));
+        }
+
+        client.getAccounts().add(account); //agrega cuenta
+        clientDao.saveClient(client); //guarda cuenta
         return client;
     }
 
@@ -75,11 +85,13 @@ public class ClientService implements ClientServiceInterface {
     //da de baja el cliente
     @Override
     public Client deactivateClient(long id_client) throws ClientNotFound {
-        Client client = deactivateClient(id_client);
+        Client client = clientDao.findClientById(id_client);
+        //verifica si existe el cliente
         if (client == null) {
             throw new ClientNotFound("No se pudo encontrar el cliente.");
         }
-        clientDao.updateClient(client);
+        client.setStatus(false); //cambia el estado del cliente
+        clientDao.updateClient(client); //acualiza el estado
         return client;
     }
 
