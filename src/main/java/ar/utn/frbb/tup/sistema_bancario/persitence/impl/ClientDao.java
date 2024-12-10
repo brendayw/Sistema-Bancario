@@ -10,6 +10,8 @@ import java.util.List;
 public class ClientDao implements ClientDaoInterface {
     private static List<Client> clientsDataBase = new ArrayList<>(); //simulacion de base de datos con una lista
 
+    //crea al cliente
+
     //guarda el cliente
     @Override
     public void saveClient(Client client) {

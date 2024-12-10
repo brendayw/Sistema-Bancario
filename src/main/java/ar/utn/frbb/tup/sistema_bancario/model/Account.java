@@ -29,6 +29,8 @@ public class Account {
        this.status = status;
    }
 
+   public Account() {}
+
    //getters and setters
    public long getId_account() {
        return id_account;

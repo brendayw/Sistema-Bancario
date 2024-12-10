@@ -6,6 +6,7 @@ import ar.utn.frbb.tup.sistema_bancario.model.Client;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountAlreadyExists;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientAlreadyExists;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientNotFound;
+import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientUnderage;
 import ar.utn.frbb.tup.sistema_bancario.service.ClientServiceInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,13 @@ public class ClientController {
             Client createdClient = clientService.createClient(client);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdClient);
 
-        } catch (ClientAlreadyExists e) {
+        } catch (ClientUnderage e) {
+            //si el cliente es menor de 18 años
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        }
+        catch (ClientAlreadyExists e) {
             // si el cliente ya existe, respondemos con 409 (Conflict)
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        } catch (ClientNotFound e) {
-            // si no se encuentra el cliente, respondemos con 404 (Not Found)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception e) {
             // otros errores (Internal Server Error)
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

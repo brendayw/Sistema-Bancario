@@ -5,6 +5,7 @@ import ar.utn.frbb.tup.sistema_bancario.model.Client;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountAlreadyExists;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientAlreadyExists;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientNotFound;
+import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientUnderage;
 import ar.utn.frbb.tup.sistema_bancario.persitence.ClientDaoInterface;
 
 import ar.utn.frbb.tup.sistema_bancario.service.ClientServiceInterface;
@@ -12,6 +13,8 @@ import ar.utn.frbb.tup.sistema_bancario.utils.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Service
@@ -26,7 +29,7 @@ public class ClientService implements ClientServiceInterface {
 
     // Crea un cliente nuevo
     @Override
-    public Client createClient(Client client) throws ClientAlreadyExists, ClientNotFound {
+    public Client createClient(Client client) throws ClientAlreadyExists, ClientUnderage {
         try {
             //verifica si existe el cliente
             Client existingClient = clientDao.findClientById(client.getId_client());
@@ -40,10 +43,14 @@ public class ClientService implements ClientServiceInterface {
                 long generatedClientId = Long.parseLong(IdGenerator.idNumberGenerator());
                 client.setId_client(generatedClientId);
             }
-            clientDao.saveClient(client); //guarda el cliente con el id
-            return client;
         }
-        return null;
+
+        if (isUnderage(client)) {
+            throw new ClientUnderage("El cliente es menor de edad y no puede ser creado.");
+        }
+
+        clientDao.saveClient(client);
+        return client;
     }
 
     //asocia una cuenta a un cliente
@@ -51,8 +58,9 @@ public class ClientService implements ClientServiceInterface {
     public Client addAccountToClient(Client client, Account account) throws AccountAlreadyExists {
         //verifica si la cuenta ya esta asociada a un cliente
         for (Account existingAccount : client.getAccounts()) {
-            if (existingAccount.getId_account() == account.getId_account()) {
-                throw new AccountAlreadyExists("La cuenta ya está asociada a un cliente.");
+            if (existingAccount.getId_account() == account.getId_account() ||
+                    existingAccount.getAccountType() == account.getAccountType()) {
+                throw new AccountAlreadyExists("La cuenta ya está asociada a un cliente o ya existe una cuenta del mismo tipo.");
             }
         }
 
@@ -98,4 +106,18 @@ public class ClientService implements ClientServiceInterface {
     public Client updateClient(Client client) throws ClientNotFound {
         return clientDao.updateClient(client);
     }
+
+    //metodo que verifica si es menor de edad
+    private boolean isUnderage(Client client) {
+        // Supongamos que client tiene un método getBirthDate() que retorna LocalDate
+        LocalDate birthDate = client.getBirthDate();
+        LocalDate today = LocalDate.now();
+
+        // Calcula la edad
+        int age = Period.between(birthDate, today).getYears();
+
+        // Si la edad es menor de 18 años, retorna true
+        return age < 18;
+    }
+
 }

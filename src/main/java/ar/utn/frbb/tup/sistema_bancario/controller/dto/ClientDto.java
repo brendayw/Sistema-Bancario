@@ -4,8 +4,8 @@ public class ClientDto extends PersonDto {
     private String entityType;
 
     //constructor
-    public ClientDto(String name, String lastname, String email, String phone, String birthDate, String entityType) {
-        super(name, lastname, email, phone, birthDate);
+    public ClientDto(String name, String lastname, String dni, String email, String phone, String birthDate, String entityType) {
+        super(name, lastname, dni, email, phone, birthDate);
         this.entityType = entityType;
     }
 

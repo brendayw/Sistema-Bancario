@@ -20,6 +20,10 @@ public class Person {
         this.birthDate = birthDate;
     }
 
+    public Person() {
+
+    }
+
     // getters and Setters
     public String getName() {
         return name;
