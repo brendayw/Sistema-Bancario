@@ -4,6 +4,7 @@ import ar.utn.frbb.tup.sistema_bancario.controller.dto.ClientDto;
 import ar.utn.frbb.tup.sistema_bancario.model.Account;
 import ar.utn.frbb.tup.sistema_bancario.model.Client;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountAlreadyExists;
+import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountTypeAlreadyExists;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientAlreadyExists;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientNotFound;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientUnderage;
@@ -97,7 +98,10 @@ public class ClientController {
             // Cliente no encontrado
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (AccountAlreadyExists e) {
-            // Cuenta ya existe
+            // Cuenta que se quiere asociar ya esta asociada
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        } catch (AccountTypeAlreadyExists e) {
+            // Cuenta del mismo tipo ya existe
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         } catch (Exception e) {
             // Otros errores

@@ -3,6 +3,7 @@ package ar.utn.frbb.tup.sistema_bancario.service.impl;
 import ar.utn.frbb.tup.sistema_bancario.model.Account;
 import ar.utn.frbb.tup.sistema_bancario.model.Client;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountAlreadyExists;
+import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountTypeAlreadyExists;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientAlreadyExists;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientNotFound;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.clients.ClientUnderage;
@@ -55,12 +56,13 @@ public class ClientService implements ClientServiceInterface {
 
     //asocia una cuenta a un cliente
     @Override
-    public Client addAccountToClient(Client client, Account account) throws AccountAlreadyExists {
+    public Client addAccountToClient(Client client, Account account) throws AccountAlreadyExists, AccountTypeAlreadyExists {
         //verifica si la cuenta ya esta asociada a un cliente
         for (Account existingAccount : client.getAccounts()) {
-            if (existingAccount.getId_account() == account.getId_account() ||
-                    existingAccount.getAccountType() == account.getAccountType()) {
-                throw new AccountAlreadyExists("La cuenta ya está asociada a un cliente o ya existe una cuenta del mismo tipo.");
+            if (existingAccount.getId_account() == account.getId_account() ) {
+                throw new AccountAlreadyExists("La cuenta ya está asociada a un cliente.");
+            } else if (existingAccount.getAccountType() == account.getAccountType()) {
+                throw new AccountTypeAlreadyExists("El cliente ya tiene este tipo de cuenta.");
             }
         }
 

@@ -2,6 +2,7 @@ package ar.utn.frbb.tup.sistema_bancario.service.impl;
 
 import ar.utn.frbb.tup.sistema_bancario.model.Account;
 import ar.utn.frbb.tup.sistema_bancario.model.Client;
+import ar.utn.frbb.tup.sistema_bancario.model.enums.AccountType;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountAlreadyExists;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountNotFound;
 import ar.utn.frbb.tup.sistema_bancario.model.exceptions.accounts.AccountTypeNotSupported;
@@ -11,6 +12,7 @@ import ar.utn.frbb.tup.sistema_bancario.persitence.ClientDaoInterface;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ar.utn.frbb.tup.sistema_bancario.service.AccountServiceInterface;
 import ar.utn.frbb.tup.sistema_bancario.service.ClientServiceInterface;
@@ -50,7 +52,9 @@ public class AccountService implements AccountServiceInterface {
 
     @Override
     public Account createAccount(Account account) throws AccountAlreadyExists, AccountTypeNotSupported, AccountNotFound {
-        List<String> validAccountTypes = Arrays.asList("SAVINGS", "CHECKING");
+        List<String> validAccountTypes = Arrays.stream(AccountType.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
 
         //si el tipo de cuenta no es valido
         if (!validAccountTypes.contains(account.getAccountType().toString())) {
